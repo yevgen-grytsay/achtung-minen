@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Achtung! Minen!</title>
+	<link rel="stylesheet" href="main.css" type="text/css"/>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+</head>
+<body>
+	<div id="game_container" class="game_container"></div>
+	<script type="text/javascript">
+		var settings = {
+			rows: 5,
+			cols: 5,
+			bombs: 5
+		};
+		var game = new AchtungMinenGame(settings);
+		var gameContainer = document.getElementById('game_container');
+		var cellList = game.getMineField();
+		
+		printTable();
+		
+		function printTable() {
+			var table = document.createElement('TABLE');
+			var tBody = document.createElement('TBODY');
+			var tr, td, cell, index = 0;
+
+			table.border = 1;
+
+			for(var i = 0; i < settings.rows; i++) {
+				tr = document.createElement('TR');
+				for(var j = 0; j < settings.cols; j++) {
+					td = document.createElement('TD');
+					cell = cellList[index];
+					
+					var content = '&nbsp;';
+					switch(cell.type) {
+						case MineFieldCellType.BOMB:
+							content = 'B';
+							break;
+						case MineFieldCellType.BOMB_COUNTER:
+							content = cell.bombsNearCounter;
+							break;
+					}
+					td.innerHTML = content;
+					
+					tr.appendChild(td);
+					++index;
+				}
+				tBody.appendChild(tr);
+			}
+			table.appendChild(tBody);
+
+			gameContainer.appendChild(table);
+		}
+		
+		//function get
+	</script>
+</body>
+</html>

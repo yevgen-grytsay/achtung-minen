@@ -1,0 +1,25 @@
+/* 
+    Document   : main
+    Created on : 14.03.2013, 18:15:49
+    Author     : Eugene
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+.game_container table {
+	border-collapse: colapse;
+}
+.game_container table td {
+	padding: 5px;
+	border: 1px solid #000000;
+	background-color: #acacac;
+	width: 25px;
+	height: 25px;
+}
+.game_container table td.open {
+	background-color: #ffffff;
+}
