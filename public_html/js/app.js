@@ -11,7 +11,6 @@ function AchtungMinenGame(settings) {
 	initNeighbors();
 	initBombCounters();
 	initNeighborhoodGraph();
-	printTable2();
 	
 	function generateField() {
 		var generator = new MineFieldGenerator();
@@ -79,9 +78,9 @@ function AchtungMinenGame(settings) {
 		}
 	}
 	
-	function getNeighbors(cellData) {
-		var row = cellData.index[0];
-		var col = cellData.index[1];
+	function getNeighbors(cell) {
+		var row = cell.index2d[0];
+		var col = cell.index2d[1];
 		
 		var minRowIndex = Math.max(0, row-1);
 		var maxRowIndex = Math.min(rows-1, row+1);
@@ -93,9 +92,9 @@ function AchtungMinenGame(settings) {
 		
 		for(var i = minRowIndex; i <= maxRowIndex; i++) {
 			for(var j = minColIndex; j <= maxColIndex; j++) {
-				var index = getFlatIndex(i, j);
+				var index = getFlatIndex(i, j, cols);
 				
-				if(cellList[index] !== cellData)
+				if(cellList[index] !== cell)
 					res.push(cellList[index]);
 			}
 		}

@@ -23,7 +23,7 @@ var MineFieldGeneratorProto = {
 		for(var i = 0; i < this.bombNum; i++) {
 			this.cells[i].type = MineFieldCellType.BOMB;
 		}
-		this.cells = shuffleArray(cellDataArr);
+		this.cells = shuffleArray(this.cells);
 	},
 			
 	shuffle: function() {
@@ -32,15 +32,17 @@ var MineFieldGeneratorProto = {
 	
 	setIndexes: function() {
 		for(var i = 0; i < this.nodesNum; i++) {
-			var index2d = to2dIndex(i);
+			var index2d = to2dIndex(i, this.rows, this.cols);
 			this.cells[i].index2d = index2d;
 			this.cells[i].index = i;
 		}
 	},
 	
 	generate: function(settings) {
+		this.rows = settings.rows;
+		this.cols = settings.cols;
 		this.nodesNum = settings.rows * settings.cols;
-		this.bombNum = settings.bombNumber;
+		this.bombNum = settings.bombNum;
 		this.bombNum = Math.min(this.bombNum, this.nodesNum);
 		
 		this.initCells();
@@ -64,7 +66,7 @@ var MineFieldCellType = {
 /*
  * Helpers
  */
-function getFlatIndex(row, col) {
+function getFlatIndex(row, col, cols) {
 	return row*cols + col;
 }
 
