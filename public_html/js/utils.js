@@ -32,8 +32,7 @@ var MineFieldGeneratorProto = {
 	
 	setIndexes: function() {
 		for(var i = 0; i < this.nodesNum; i++) {
-			var index2d = to2dIndex(i, this.rows, this.cols);
-			this.cells[i].index2d = index2d;
+			this.cells[i].index2d =  to2dIndex(i, this.cols);
 			this.cells[i].index = i;
 		}
 	},
@@ -70,10 +69,11 @@ function getFlatIndex(row, col, cols) {
 	return row*cols + col;
 }
 
-function to2dIndex(flatIndex, rows, cols) {
+function to2dIndex(flatIndex, cols) {
 	var row = Math.floor(flatIndex/cols);
 	var col = flatIndex - row*cols;
-	return [row, col];
+	//return [row, col];
+	return {row: row, col: col};
 }
 
 function shuffleArray(arr) {

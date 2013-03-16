@@ -23,7 +23,6 @@ function AchtungMinenGame(settings) {
 	
 	function initNeighborhoodGraph() {
 		for(var i = 0; i < nodes; i++) {
-			//var nb = getNeighbors(cellList[i]);
 			var nb = cellList[i].nb;
 			var nbLen = nb.length;
 			neighborhoodGraph[i] = [];
@@ -79,8 +78,8 @@ function AchtungMinenGame(settings) {
 	}
 	
 	function getNeighbors(cell) {
-		var row = cell.index2d[0];
-		var col = cell.index2d[1];
+		var row = cell.index2d.row;
+		var col = cell.index2d.col;
 		
 		var minRowIndex = Math.max(0, row-1);
 		var maxRowIndex = Math.min(rows-1, row+1);
@@ -101,66 +100,23 @@ function AchtungMinenGame(settings) {
 		
 		return res;
 	}
-	/*
-	function printTable() {
-		var html = '<table border="1">';
+	
+	function haveCommonEdges(cellA, cellB) {
+		//Vertical neighborhood
+		var indexAbsDiff = Math.abs(cellA.index - cellB.index);
 		
-		for(var i = 0; i < rows; i++) {
-			html += '<tr>';
-			for(var j = 0; j < cols; j++) {
-				var index = getFlatIndex(i, j);
-				
-				html += '<td>';
-				html += getHtmlForCell(cellList[index]);
-				html += '</td>';
-				//if(cellList[i].type == CELL_TYPE_BOMB)
-				//initBombCountersAround(cellList[i]);
-			}
-			html += '</tr>';
+		//Vertical neighborhood
+		if(indexAbsDiff === cols) {
+			return true;
 		}
-		html += '</table>';
 		
-		document.write(html);
-	}
-	
-	function printTable2() {
-		var table = document.createElement('TABLE');
-		var tBody = document.createElement('TBODY');
-		var tr, td, index;
-		
-		table.border = 1;
-		
-		for(var i = 0; i < rows; i++) {
-			tr = document.createElement('TR');
-			for(var j = 0; j < cols; j++) {
-				index = getFlatIndex(i, j);
-				td = document.createElement('TD');
-				//td.innerHTML = getHtmlForCell(cellList[index]);
-				cellList[index].content = getHtmlForCell(cellList[index]);
-				td.innerHTML = '&nbsp;';
-				
-				//td.innerHTML = cellList[index].content;
-				
-				initCellHandlers(td, cellList[index]);
-				tr.appendChild(td);
-			}
-			tBody.appendChild(tr);
+		//Horizontal neighborhood
+		if(indexAbsDiff === 1 && cellA.index2d.row === cellB.index2d.row) {
+			return true;
 		}
-		table.appendChild(tBody);
 		
-		container.appendChild(table);
+		return false;
 	}
-	
-	function initCellHandlers(cell, cellData) {
-		cell.data = cellData;
-		cell.data.htmlObj = cell;
-		cell.onclick = function() {
-			tryOpenCell(this);
-		};
-	}
-	*/
-	
-	
 	
 	/*
 	 * Uses breadth-first search
@@ -176,19 +132,30 @@ function AchtungMinenGame(settings) {
 		while (q.length > 0) {
 			var v = q.pop();
 			
-			for (var i = 0; i < neighborhoodGraph[v].length; i++) {
-				var to = neighborhoodGraph[v][i];
+			//for (var i = 0; i < neighborhoodGraph[v].length; i++) {
+			for (var i = 0; i < cellList[v].nb.length; i++) {
+				//var to = neighborhoodGraph[v][i];
+				var to = cellList[v].nb[i];
 				if (!visited[to]) {
+					var curCell = cellList[to];
+					
+					if(curCell.type === MineFieldCellType.EMPTY) {
+						if(!haveCommonEdges(cellList[v], curCell)) {
+							continue;
+						}
+					}
+					
 					visited[to] = true;
-					
-					var cellData = cellList[to];
-					
-					if(cellData.type === MineFieldCellType.BOMB) {
+					if(curCell.type === MineFieldCellType.BOMB) {
 						continue;
 					}
 					
-					cellData.isOpen = true;
-					opened.push(cellData);
+					curCell.isOpen = true;
+					opened.push(curCell);
+					
+					if(curCell.type === MineFieldCellType.BOMB_COUNTER) {
+						continue;
+					}
 					q.push(to);
 				}
 			}
@@ -196,35 +163,13 @@ function AchtungMinenGame(settings) {
 		
 		return opened;
 	}
-	/*
-	function getHtmlForCell(cellData) {
-		var html = '';
-		
-		switch(cellData.type) {
-			case CELL_TYPE_BOMB:
-				html = 'X';
-				break;
-			case CELL_TYPE_CLEAR:
-				html = '&nbsp;';
-				break;
-			case CELL_TYPE_BOMB_COUNTER:
-				html = cellData.bombsNearCounter;
-				break;
-			default:
-				html = '';
-				break;
-		}
-		
-		return html;
-	}
-	*/
    
    function tryOpenCell(cell) {
 		var opened = [];
 		cell.isOpen = true;
 		
 		if(cell.type === MineFieldCellType.EMPTY) {
-			opened = openFreeArea(cell);
+			opened = openFreeAreaAroundCell(cell);
 		}
 		
 		opened.push(cell);
