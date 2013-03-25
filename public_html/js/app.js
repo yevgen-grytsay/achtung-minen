@@ -150,8 +150,13 @@ function AchtungMinenGame(settings) {
 						continue;
 					}
 					
+					/*
+					 * Avoid counting already open cells
+					 */
+					if(curCell.isOpen !== true) {
+						opened.push(curCell);
+					}
 					curCell.isOpen = true;
-					opened.push(curCell);
 					
 					if(curCell.type === MineFieldCellType.BOMB_COUNTER) {
 						continue;
