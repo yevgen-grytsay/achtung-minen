@@ -3,18 +3,18 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Achtung! Minen!</title>
-	<link rel="stylesheet" href="main.css" type="text/css"/>
-	<script type="text/javascript" src="js/libs/jquery-1.9.0/jquery.min.js"></script>
-	<script type="text/javascript" src="js/utils.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
+	<link rel="stylesheet" href="../public_html/main.css" type="text/css"/>
+	<script type="text/javascript" src="../public_html/js/libs/jquery-1.9.0/jquery.min.js"></script>
+	<script type="text/javascript" src="../public_html/js/utils.js"></script>
+	<script type="text/javascript" src="../public_html/js/app.js"></script>
 </head>
 <body>
 	<div id="game_container" class="game_container"></div>
 	<script type="text/javascript">
 		var settings = {
-			rows: 10,
-			cols: 10,
-			bombs: 10
+			rows: 20,
+			cols: 20,
+			bombs: 100
 		};
 		var game = new AchtungMinenGame(settings);
 		var gameContainer = document.getElementById('game_container');
@@ -28,7 +28,7 @@
 		function printTable() {
 			table = document.createElement('TABLE');
 			var tBody = document.createElement('TBODY');
-			var tr, td, cell, div, index = 0;
+			var tr, td, cell, index = 0;
 
 			table.border = 1;
 
@@ -36,10 +36,7 @@
 				tr = document.createElement('TR');
 				for(var j = 0; j < settings.cols; j++) {
 					td = document.createElement('TD');
-					div = document.createElement('DIV');
-					div.className = "content";
 					cell = cellList[index];
-					
 					
 					var content = '&nbsp;';
 					switch(cell.type) {
@@ -50,14 +47,13 @@
 							content = cell.bombsNearCounter;
 							break;
 					}
-					div.innerHTML = content;
+					td.innerHTML = content;
 					td.cellObj = cell;
 					cell.htmlObj = td;
 					
 					//td.onclick = onCellLeftClick;
 					$(td).click(onCellLeftClick);
 					
-					td.appendChild(div);
 					tr.appendChild(td);
 					++index;
 				}

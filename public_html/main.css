@@ -11,7 +11,7 @@ root {
 }
 
 .game_container table {
-	border-collapse: colapse;
+	border-collapse: separate;
 }
 .game_container table td {
 	padding: 5px;
@@ -22,4 +22,11 @@ root {
 }
 .game_container table td.open {
 	background-color: #ffffff;
+}
+.game_container table td .content {
+	text-align: center;
+	display: none;
+}
+.game_container table td.open .content {
+	display: block;
 }

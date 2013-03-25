@@ -88,31 +88,3 @@ function shuffleArray(arr) {
 	}
 	return arr;
 }
-
-/*
-MineFieldCellType.BOMB = 0;
-MineFieldCellType.BOMB_COUNTER = 1;
-MineFieldCellType.EMPTY = 2;
- */
-
-
-/*
-function getIndex() {
-	if(arguments.length == 1) {
-		return faltIndex;
-	}
-	else if (arguments.length == 2) {
-		return index2d;
-	}
-}
-
-Or this way:
-
-var cell = {
-	type: ...,
-	index: ...,
-	index2d: ...
-}
-
-
-*/
