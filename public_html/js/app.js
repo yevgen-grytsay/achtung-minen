@@ -138,7 +138,7 @@ function AchtungMinenGame(settings) {
 				var to = cellList[v].nb[i];
 				if (!visited[to]) {
 					var curCell = cellList[to];
-					
+
 					visited[to] = true;
 					if(curCell.type === MineFieldCellType.BOMB) {
 						continue;
