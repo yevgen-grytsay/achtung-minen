@@ -139,11 +139,11 @@ function AchtungMinenGame(settings) {
 				if (!visited[to]) {
 					var curCell = cellList[to];
 					
-					if(curCell.type === MineFieldCellType.EMPTY) {
+					/*if(curCell.type === MineFieldCellType.EMPTY) {
 						if(!haveCommonEdges(cellList[v], curCell)) {
 							continue;
 						}
-					}
+					}*/
 					
 					visited[to] = true;
 					if(curCell.type === MineFieldCellType.BOMB) {
