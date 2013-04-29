@@ -47,6 +47,7 @@
 							content = 'B';
 							break;
 						case MineFieldCellType.BOMB_COUNTER:
+							div.className = div.className + ' counter-cell bomb-qty-'+cell.bombsNearCounter;
 							content = cell.bombsNearCounter;
 							break;
 					}

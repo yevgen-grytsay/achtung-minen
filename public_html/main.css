@@ -14,14 +14,17 @@ root {
 	border-collapse: separate;
 }
 .game_container table td {
-	padding: 5px;
-	border: 1px solid #000000;
-	background-color: #acacac;
-	width: 25px;
-	height: 25px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 0px;
+	border: 1px solid #acacac;
+	background: transparent url(cell.png) no-repeat left top;
+	width: 37px;
+	height: 37px;
 }
 .game_container table td.open {
-	background-color: #ffffff;
+	background-image: none;
+	background-color: #fcf1cd;
 }
 .game_container table td .content {
 	text-align: center;
@@ -30,3 +33,33 @@ root {
 .game_container table td.open .content {
 	display: block;
 }
+
+.counter-cell {
+	font: bold 16px/16px Verdana, sans-serif;
+}
+.bomb-qty-1 {
+	color: #3f4fbd;
+}
+.bomb-qty-2 {
+	color: #1e6803;
+}
+.bomb-qty-3 {
+	color: #a9070c;
+}
+.bomb-qty-4 {
+	color: #010281;
+}
+.bomb-qty-5 {
+	color: #a52a2a;
+}
+.bomb-qty-6 {
+	color: #000000;
+}
+.bomb-qty-7 {
+	color: #ff0000;
+}
+.bomb-qty-8 {
+	color: #483d8b;
+}
+
+
