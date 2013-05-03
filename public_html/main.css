@@ -13,7 +13,7 @@ root {
 .game_container table {
 	border-collapse: separate;
 }
-.game_container table td {
+.game_container td {
 	text-align: center;
 	vertical-align: middle;
 	padding: 0px;
@@ -26,11 +26,12 @@ root {
 	background-image: none;
 	background-color: #fcf1cd;
 }
-.game_container table td .content {
+.game_container td .content {
+	cursor: default;
 	text-align: center;
 	display: none;
 }
-.game_container table td.open .content {
+.game_container td.open .content {
 	display: block;
 }
 
@@ -62,4 +63,7 @@ root {
 	color: #483d8b;
 }
 
-
+.game_container table td.checked {
+	background-image: none;
+	background-color: #ff0000;
+}

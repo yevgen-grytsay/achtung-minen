@@ -28,7 +28,7 @@ function AchtungMinenGame(settings) {
 			neighborhoodGraph[i] = [];
 			
 			for(var j = 0; j < nbLen; j++) {
-				if(nb[j].type === MineFieldCellType.BOMB) {
+				if(nb[j].isBomb()) {
 					continue;
 				}
 				
@@ -41,19 +41,21 @@ function AchtungMinenGame(settings) {
 	function initNeighbors() {
 		for(var i = 0; i < nodes; i++) {
 			var nb = getNeighbors(cellList[i]);
-			var nbLen = nb.length;
-			
-			cellList[i].nb = [];
+			//var nbLen = nb.length;
+
+			cellList[i].nb = nb;
+			/*cellList[i].nb = [];
 			for(var j = 0; j < nbLen; j++) {
 				cellList[i].nb.push(nb[j].index);
-			}
+			}*/
 		}
 	}
 	
 	function initBombCounters() {
 		for(var i = 0; i < nodes; i++) {
-			if(cellList[i].type === MineFieldCellType.BOMB)
+			if(cellList[i].isBomb()) {
 				initBombCountersAround(cellList[i]);
+			}
 		}
 	}
 	
@@ -64,13 +66,13 @@ function AchtungMinenGame(settings) {
 		for(var i = 0; i < len; i++) {
 			var curNb = nb[i];
 			
-			if(curNb.type === MineFieldCellType.BOMB) {
+			if(curNb.isBomb()) {
 				continue;
 			}
 			
 			if(curNb.type === MineFieldCellType.BOMB_COUNTER) {
 				curNb.bombsNearCounter += 1;
-			} else if(curNb.type === MineFieldCellType.EMPTY) {
+			} else if(curNb.isEmpty()) {
 				curNb.type = MineFieldCellType.BOMB_COUNTER;
 				curNb.bombsNearCounter = 1;
 			}
@@ -122,6 +124,8 @@ function AchtungMinenGame(settings) {
 	 * Uses breadth-first search
 	 */
 	function openFreeAreaAroundCell(cell) {
+		var curCell;
+		var to;
 		var q = [];	//queue
 		var visited = [];
 		var opened = [];
@@ -131,27 +135,26 @@ function AchtungMinenGame(settings) {
 		
 		while (q.length > 0) {
 			var v = q.pop();
-			
-			//for (var i = 0; i < neighborhoodGraph[v].length; i++) {
+
 			for (var i = 0; i < cellList[v].nb.length; i++) {
-				//var to = neighborhoodGraph[v][i];
-				var to = cellList[v].nb[i];
+				to = cellList[v].nb[i].index;
 				if (!visited[to]) {
-					var curCell = cellList[to];
+					curCell = cellList[to];
 
 					visited[to] = true;
-					if(curCell.type === MineFieldCellType.BOMB) {
+					if(curCell.isBomb() || curCell.isChecked) {
 						continue;
 					}
-					
-					/*
-					 * Avoid counting already open cells
-					 */
-					if(curCell.isOpen !== true) {
+
+					if(!curCell.isOpen) {
 						opened.push(curCell);
 					}
 					curCell.isOpen = true;
-					
+
+					/*
+					 * We don't add BOMB_COUNTER cell to queue because we don't need
+					 * to visit its neighbors.
+					 */
 					if(curCell.type === MineFieldCellType.BOMB_COUNTER) {
 						continue;
 					}
@@ -165,9 +168,12 @@ function AchtungMinenGame(settings) {
    
    function tryOpenCell(cell) {
 		var opened = [];
+	   	if(cell.isChecked) {
+			return opened;
+		}
+
 		cell.isOpen = true;
-		
-		if(cell.type === MineFieldCellType.EMPTY) {
+		if(cell.isEmpty()) {
 			opened = openFreeAreaAroundCell(cell);
 		}
 		

@@ -3,19 +3,42 @@
  * and open the template in the editor.
  */
 
+var MineFieldCellType = {
+	EMPTY: 0,
+	BOMB: 1,
+	BOMB_COUNTER: 2
+};
+
+var cellPrototype = {
+	/*type: MineFieldCellType.EMPTY,
+	bombsNearCounter: 0,
+	isOpen: false,
+	isChecked: false,
+	index2d: null,
+	index: null,*/
+	isBomb: function() {
+		return this.type === MineFieldCellType.BOMB;
+	},
+	isEmpty: function() {
+		return this.type === MineFieldCellType.EMPTY;
+	}
+};
+function Cell() {
+	this.type = MineFieldCellType.EMPTY;
+	this.bombsNearCounter = 0;
+	this.isOpen = false;
+	this.isChecked = false;
+	this.index2d = null;
+	this.index = null;
+}
+Cell.prototype = cellPrototype;
+
 var MineFieldGeneratorProto = {
 	settings: {},
 	cells: [],
 	initCells: function() {
 		for(var i = 0; i < this.nodesNum; i++) {
-			var cellData = {
-				type: MineFieldCellType.EMPTY,
-				bombsNearCounter: 0,
-				isOpen: false,
-				index2d: null,
-				index: null
-			};
-			this.cells.push(cellData);
+			this.cells.push(new Cell());
 		}
 	},
 	
@@ -56,11 +79,6 @@ var MineFieldGeneratorProto = {
 function MineFieldGenerator() {}
 MineFieldGenerator.prototype = MineFieldGeneratorProto;
 
-var MineFieldCellType = {
-	EMPTY: 0,
-	BOMB: 1,
-	BOMB_COUNTER: 2
-};
 
 /*
  * Helpers
