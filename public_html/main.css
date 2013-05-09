@@ -63,7 +63,6 @@ root {
 	color: #483d8b;
 }
 
-.game_container table td.checked {
-	background-image: none;
-	background-color: #ff0000;
+.game_container td.checked {
+	background-position: left bottom;
 }
